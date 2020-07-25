@@ -785,10 +785,10 @@ namespace RTC
 				// outgoing packet matches the highest seen in the previous stream. Fix it.
 				else if (tsExtraOffset == 0u)
 				{
-					// Apply an offset for a new frame in a 13fps stream.
-					static const auto TsOffset = MaxExtraOffsetMs * this->rtpStream->GetClockRate() / 1000;
+					// Apply an expected offset for a new frame in a 30fps stream.
+					static const uint8_t MsOffset{ 33u }; // (1 / 30 * 1000).
 
-					tsExtraOffset = TsOffset;
+					tsExtraOffset = MsOffset * this->rtpStream->GetClockRate() / 1000;
 				}
 
 				if (tsExtraOffset > 0u)

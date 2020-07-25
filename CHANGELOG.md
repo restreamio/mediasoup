@@ -1,9 +1,40 @@
 # Changelog
 
 
-### 3.6.9 (WIP)
+### 3.6.13
+
+* RTP on `DirectTransport` (issue #433, PR #434):
+  - New API `producer.send(rtpPacket: Buffer)`.
+  - New API `consumer.on('rtp', (rtpPacket: Buffer)`.
+  - New API `directTransport.sendRtcp(rtcpPacket: Buffer)`.
+  - New API `directTransport.on('rtcp', (rtpPacket: Buffer)`.
+
+
+### 3.6.12
+
+* Release script.
+
+
+### 3.6.11
+
+* `Transport`: rename `maxSctpSendBufferSize` to `sctpSendBufferSize`.
+
+
+### 3.6.10
+
+* `Transport`: Implement `maxSctpSendBufferSize`.
+* Update `libuv` to 1.38.1.
+* Update `Catch` to 2.12.4.
+* Update NPM deps.
+
+
+### 3.6.9
 
 * `Transport::ReceiveRtpPacket()`: Call `RecvStreamClosed(packet->GetSsrc())` if received RTP packet does not match any `Producer`.
+* `Transport::HandleRtcpPacket()`: Ensure `Consumer` is found for received NACK Feedback packets.
+* Update NPM deps.
+* Update C++ `Catch` dep.
+* Fix issue #408.
 
 
 ### 3.6.8
