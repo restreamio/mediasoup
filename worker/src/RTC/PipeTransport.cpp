@@ -495,11 +495,11 @@ namespace RTC
 	}
 
 	void PipeTransport::SendMessage(
-	  RTC::DataConsumer* dataConsumer, uint32_t ppid, const uint8_t* msg, size_t len)
+	  RTC::DataConsumer* dataConsumer, uint32_t ppid, const uint8_t* msg, size_t len, onQueuedCallback* cb)
 	{
 		MS_TRACE();
 
-		this->sctpAssociation->SendSctpMessage(dataConsumer, ppid, msg, len);
+		this->sctpAssociation->SendSctpMessage(dataConsumer, ppid, msg, len, cb);
 	}
 
 	void PipeTransport::SendSctpData(const uint8_t* data, size_t len)
@@ -594,19 +594,24 @@ namespace RTC
 			return;
 		}
 
-		// Verify that the packet's tuple matches our tuple.
-		if (!this->tuple->Compare(tuple))
-		{
-			MS_DEBUG_TAG(rtp, "ignoring RTP packet from unknown IP:port");
-
-			return;
-		}
-
 		RTC::RtpPacket* packet = RTC::RtpPacket::Parse(data, len);
 
 		if (!packet)
 		{
 			MS_WARN_TAG(rtp, "received data is not a valid RTP packet");
+
+			return;
+		}
+
+		// Verify that the packet's tuple matches our tuple.
+		if (!this->tuple->Compare(tuple))
+		{
+			MS_DEBUG_TAG(rtp, "ignoring RTP packet from unknown IP:port");
+
+			// Remove this SSRC.
+			RecvStreamClosed(packet->GetSsrc());
+
+			delete packet;
 
 			return;
 		}

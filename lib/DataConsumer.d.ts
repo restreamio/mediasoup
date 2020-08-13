@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { EnhancedEventEmitter } from './EnhancedEventEmitter';
 import { Channel } from './Channel';
 import { PayloadChannel } from './PayloadChannel';
@@ -59,6 +60,7 @@ export declare class DataConsumer extends EnhancedEventEmitter {
      * @emits dataproducerclose
      * @emits message - (message: Buffer, ppid: number)
      * @emits sctpsendbufferfull
+     * @emits bufferedamountlow - (bufferedAmount: number)
      * @emits @close
      * @emits @dataproducerclose
      */
@@ -129,6 +131,18 @@ export declare class DataConsumer extends EnhancedEventEmitter {
      * Get DataConsumer stats.
      */
     getStats(): Promise<DataConsumerStat[]>;
+    /**
+     * Set buffered amount low threshold.
+     */
+    setBufferedAmountLowThreshold(threshold: number): Promise<void>;
+    /**
+     * Send data.
+     */
+    send(message: string | Buffer, ppid?: number): Promise<void>;
+    /**
+     * Get buffered amount size.
+     */
+    getBufferedAmount(): Promise<number>;
     private _handleWorkerNotifications;
 }
 //# sourceMappingURL=DataConsumer.d.ts.map

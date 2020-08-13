@@ -64,7 +64,7 @@ export class Channel extends EnhancedEventEmitter
 		this._consumerSocket = consumerSocket as Duplex;
 
 		// Read Channel responses/notifications from the worker.
-		this._consumerSocket.on('data', (buffer) =>
+		this._consumerSocket.on('data', (buffer: Buffer) =>
 		{
 			if (!this._recvBuffer)
 			{
@@ -291,7 +291,7 @@ export class Channel extends EnhancedEventEmitter
 
 	private _processMessage(msg: any): void
 	{
-		// If a response retrieve its associated request.
+		// If a response, retrieve its associated request.
 		if (msg.id)
 		{
 			const sent = this._sents.get(msg.id);
