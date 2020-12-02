@@ -1,6 +1,31 @@
 # Changelog
 
 
+### 3.6.28 (WIP)
+
+* Fix replacement of `__MEDIASOUP_VERSION__` in `lib/index.d.ts` (issue #483).
+* Update NPM deps.
+
+
+### 3.6.27
+
+* Update NPM deps.
+* Allow the `mediasoup-worker` process to inherit all environment variables (issue #480).
+
+
+### 3.6.26
+
+* BWE tweaks and debug logs.
+* Update NPM deps.
+
+
+### 3.6.25
+
+* Update `Catch` to 2.13.2.
+* Update NPM deps.
+* sctp fixes #479.
+
+
 ### 3.6.24
 
 * Update `awaitqueue` dependency.
