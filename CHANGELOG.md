@@ -1,10 +1,35 @@
 # Changelog
 
 
-### 3.6.28 (WIP)
+### 3.6.31
+
+* Move `bufferedAmount` from `dataConsumer.dump()` to `dataConsumer.getStats()`.
+
+
+### 3.6.30
+
+* Add `pipe` option to `transport.consume()`(PR #494).
+  - So the receiver will get all streams from the `Producer`.
+  - It works for any kind of transport (but `PipeTransport` which is always like this).
+* Update NPM deps.
+* Add `LICENSE` and `PATENTS` files in `libwebrtc` dependency (issue #495).
+* Added `worker/src/Utils/README_BASE64_UTILS` (issue #497).
+* Update `Catch` to 2.13.4.
+* Update `usrsctp`.
+
+
+### 3.6.29
+
+* Fix wrong message about `rtcMinPort` and `rtcMaxPort`.
+* Update deps.
+* Improve `EnhancedEventEmitter.safeAsPromise()` (although not used).
+
+
+### 3.6.28
 
 * Fix replacement of `__MEDIASOUP_VERSION__` in `lib/index.d.ts` (issue #483).
 * Update NPM deps.
+* `worker/scripts/configure.py`: Handle 'mips64' (PR #485).
 
 
 ### 3.6.27
