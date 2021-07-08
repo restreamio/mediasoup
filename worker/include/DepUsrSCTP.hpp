@@ -31,13 +31,15 @@ private:
 public:
 	static void ClassInit();
 	static void ClassDestroy();
+	static void CreateChecker();
+	static void CloseChecker();
 	static uintptr_t GetNextSctpAssociationId();
 	static void RegisterSctpAssociation(RTC::SctpAssociation* sctpAssociation);
 	static void DeregisterSctpAssociation(RTC::SctpAssociation* sctpAssociation);
 	static RTC::SctpAssociation* RetrieveSctpAssociation(uintptr_t id);
 
 private:
-	static Checker* checker;
+	thread_local static Checker* checker;
 	static uint64_t numSctpAssociations;
 	static uintptr_t nextSctpAssociationId;
 	static std::unordered_map<uintptr_t, RTC::SctpAssociation*> mapIdSctpAssociation;

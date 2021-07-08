@@ -1,4 +1,5 @@
 const { toBeType } = require('jest-tobetype');
+const pickPort = require('pick-port');
 const mediasoup = require('../');
 const { createWorker } = mediasoup;
 
@@ -89,15 +90,12 @@ test('router.createPlainTransport() succeeds', async () =>
 	expect(transport1.tuple.localPort).toBeType('number');
 	expect(transport1.tuple.protocol).toBe('udp');
 	expect(transport1.rtcpTuple).toBeUndefined();
-	expect(transport1.sctpParameters).toStrictEqual(
+	expect(transport1.sctpParameters).toMatchObject(
 		{
-			port               : 5000,
-			OS                 : 1024,
-			MIS                : 1024,
-			maxMessageSize     : 262144,
-			isDataChannel      : false,
-			sctpBufferedAmount : 0,
-			sendBufferSize     : 262144
+			port           : 5000,
+			OS             : 1024,
+			MIS            : 1024,
+			maxMessageSize : 262144
 		});
 	expect(transport1.sctpState).toBe('new');
 	expect(transport1.srtpParameters).toBeUndefined();
@@ -307,7 +305,7 @@ test('plainTransport.getStats() succeeds', async () =>
 	expect(data).toBeType('array');
 	expect(data.length).toBe(1);
 	expect(data[0].type).toBe('plain-rtp-transport');
-	expect(data[0].transportId).toBeType('string');
+	expect(data[0].transportId).toBe(transport.id);
 	expect(data[0].timestamp).toBeType('number');
 	expect(data[0].bytesReceived).toBe(0);
 	expect(data[0].recvBitrate).toBe(0);
@@ -328,8 +326,6 @@ test('plainTransport.getStats() succeeds', async () =>
 	expect(data[0].tuple.localPort).toBeType('number');
 	expect(data[0].tuple.protocol).toBe('udp');
 	expect(data[0].rtcpTuple).toBeUndefined();
-	expect(data[0].recvBitrate).toBe(0);
-	expect(data[0].sendBitrate).toBe(0);
 }, 2000);
 
 test('plainTransport.connect() succeeds', async () =>
@@ -406,6 +402,20 @@ test('PlainTransport methods reject if closed', async () =>
 	await expect(transport.connect({}))
 		.rejects
 		.toThrow(Error);
+}, 2000);
+
+test('router.createPlainTransport() with fixed port succeeds', async () =>
+{
+	const port = await pickPort({ ip: '127.0.0.1', reserveTimeout: 0 });
+	const plainTransport = await router.createPlainTransport(
+		{
+			listenIp : '127.0.0.1',
+			port
+		});
+
+	expect(plainTransport.tuple.localPort).toEqual(port);
+
+	plainTransport.close();
 }, 2000);
 
 test('PlainTransport emits "routerclose" if Router is closed', async () =>

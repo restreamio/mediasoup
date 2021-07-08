@@ -1,4 +1,5 @@
 const { toBeType } = require('jest-tobetype');
+const pickPort = require('pick-port');
 const mediasoup = require('../');
 const { createWorker } = mediasoup;
 
@@ -96,15 +97,12 @@ test('router.createWebRtcTransport() succeeds', async () =>
 	expect(transport1.iceParameters.iceLite).toBe(true);
 	expect(transport1.iceParameters.usernameFragment).toBeType('string');
 	expect(transport1.iceParameters.password).toBeType('string');
-	expect(transport1.sctpParameters).toStrictEqual(
+	expect(transport1.sctpParameters).toMatchObject(
 		{
-			port               : 5000,
-			OS                 : 2048,
-			MIS                : 2048,
-			maxMessageSize     : 1000000,
-			isDataChannel      : true,
-			sctpBufferedAmount : 0,
-			sendBufferSize     : 262144
+			port           : 5000,
+			OS             : 2048,
+			MIS            : 2048,
+			maxMessageSize : 1000000
 		});
 	expect(transport1.iceCandidates).toBeType('array');
 	expect(transport1.iceCandidates.length).toBe(6);
@@ -226,7 +224,7 @@ test('webRtcTransport.getStats() succeeds', async () =>
 	expect(data).toBeType('array');
 	expect(data.length).toBe(1);
 	expect(data[0].type).toBe('webrtc-transport');
-	expect(data[0].transportId).toBeType('string');
+	expect(data[0].transportId).toBe(transport.id);
 	expect(data[0].timestamp).toBeType('number');
 	expect(data[0].iceRole).toBe('controlled');
 	expect(data[0].iceState).toBe('new');
@@ -248,8 +246,6 @@ test('webRtcTransport.getStats() succeeds', async () =>
 	expect(data[0].probationSendBitrate).toBe(0);
 	expect(data[0].iceSelectedTuple).toBeUndefined();
 	expect(data[0].maxIncomingBitrate).toBeUndefined();
-	expect(data[0].recvBitrate).toBe(0);
-	expect(data[0].sendBitrate).toBe(0);
 }, 2000);
 
 test('webRtcTransport.connect() succeeds', async () =>
@@ -318,6 +314,16 @@ test('webRtcTransport.connect() with wrong arguments rejects with TypeError', as
 		.rejects
 		.toThrow(TypeError);
 
+	dtlsRemoteParameters =
+	{
+		fingerprints : [],
+		role         : 'client'
+	};
+
+	await expect(transport.connect({ dtlsParameters: dtlsRemoteParameters }))
+		.rejects
+		.toThrow(TypeError);
+
 	await expect(transport.connect({ dtlsParameters: dtlsRemoteParameters }))
 		.rejects
 		.toThrow(TypeError);
@@ -326,6 +332,13 @@ test('webRtcTransport.connect() with wrong arguments rejects with TypeError', as
 }, 2000);
 
 test('webRtcTransport.setMaxIncomingBitrate() succeeds', async () =>
+{
+	await expect(transport.setMaxIncomingBitrate(100000))
+		.resolves
+		.toBeUndefined();
+}, 2000);
+
+test('webRtcTransport.setMaxOutgoingBitrate() succeeds', async () =>
 {
 	await expect(transport.setMaxIncomingBitrate(100000))
 		.resolves
@@ -470,9 +483,28 @@ test('WebRtcTransport methods reject if closed', async () =>
 		.rejects
 		.toThrow(Error);
 
+	await expect(transport.setMaxOutgoingBitrate())
+		.rejects
+		.toThrow(Error);
+
 	await expect(transport.restartIce())
 		.rejects
 		.toThrow(Error);
+}, 2000);
+
+test('router.createWebRtcTransport() with fixed port succeeds', async () =>
+{
+
+	const port = await pickPort({ ip: '127.0.0.1', reserveTimeout: 0 });
+	const webRtcTransport = await router.createWebRtcTransport(
+		{
+			listenIps : [ '127.0.0.1' ],
+			port
+		});
+
+	expect(webRtcTransport.iceCandidates[0].port).toEqual(port);
+
+	webRtcTransport.close();
 }, 2000);
 
 test('WebRtcTransport emits "routerclose" if Router is closed', async () =>

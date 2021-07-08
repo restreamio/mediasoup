@@ -29,6 +29,8 @@
 
 # Python generated stuff in Windows.
 /worker/scripts/configure.pyc
+# worker scripts node-modules.
+/worker/scripts/node_modules/
 
 # Vistual Studio generated Stuff.
 /worker/**/Debug/
@@ -37,3 +39,14 @@
 
 # Vistual Studio Code stuff.
 /.vscode/
+
+# JetBrains IDE stuff.
+/.idea/
+
+# Rust.
+/target
+/Cargo.lock
+
+# Rust examples.
+/rust/examples-frontend/*/node_modules
+/rust/examples-frontend/*/package-lock.json
