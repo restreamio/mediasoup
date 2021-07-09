@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 2.8.8 FATAL_ERROR)
 cmake_policy(VERSION 2.8.8)
 project(mediasoup-worker)
 enable_language(ASM)
-set(builddir "${CMAKE_CURRENT_BINARY_DIR}")
 
 set(CMAKE_C_OUTPUT_EXTENSION_REPLACE 1)
 set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
@@ -240,8 +239,6 @@ set(libmediasoup-worker_headers
 # TODO: Below code is auto-generated for a single platform and fuzzer doesn't even compile
 
 #mediasoup/worker/deps/openssl/openssl.gyp:openssl#target
-set(TARGET "openssl")
-set(TOOLSET "target")
 list(APPEND openssl__asm_srcs
   "deps/openssl/config/archs/linux-x86_64/asm_avx2/crypto/aes/aesni-mb-x86_64.s"
   "deps/openssl/config/archs/linux-x86_64/asm_avx2/crypto/aes/aesni-sha1-x86_64.s"
@@ -971,26 +968,24 @@ list(APPEND openssl__include_dirs
   "${CMAKE_CURRENT_LIST_DIR}/deps/openssl/config/archs/linux-x86_64/asm_avx2/crypto/include/internal")
 set_property(TARGET openssl APPEND PROPERTY INCLUDE_DIRECTORIES ${openssl__include_dirs})
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-set_target_properties(openssl PROPERTIES COMPILE_DEFINITIONS "OPENSSL_NO_HW;NDEBUG;OPENSSL_USE_NODELETE;L_ENDIAN;OPENSSL_PIC;OPENSSL_CPUID_OBJ;OPENSSL_IA32_SSE2;OPENSSL_BN_ASM_MONT;OPENSSL_BN_ASM_MONT5;OPENSSL_BN_ASM_GF2m;SHA1_ASM;SHA256_ASM;SHA512_ASM;KECCAK1600_ASM;RC4_ASM;MD5_ASM;AESNI_ASM;VPAES_ASM;GHASH_ASM;ECP_NISTZ256_ASM;X25519_ASM;POLY1305_ASM;OPENSSLDIR=\"/etc/ssl\";ENGINESDIR=\"/dev/null\";TERMIOS;")
-set_target_properties(openssl PROPERTIES COMPILE_FLAGS "-m64 -Wa,--noexecstack -Wall -O3 -pthread -m64 -Wall -O3 -Wno-missing-field-initializers -Wno-old-style-declaration -O3 -Wno-unknown-warning-option -fPIC ")
+  set_target_properties(openssl PROPERTIES COMPILE_DEFINITIONS "OPENSSL_NO_HW;NDEBUG;OPENSSL_USE_NODELETE;L_ENDIAN;OPENSSL_PIC;OPENSSL_CPUID_OBJ;OPENSSL_IA32_SSE2;OPENSSL_BN_ASM_MONT;OPENSSL_BN_ASM_MONT5;OPENSSL_BN_ASM_GF2m;SHA1_ASM;SHA256_ASM;SHA512_ASM;KECCAK1600_ASM;RC4_ASM;MD5_ASM;AESNI_ASM;VPAES_ASM;GHASH_ASM;ECP_NISTZ256_ASM;X25519_ASM;POLY1305_ASM;OPENSSLDIR=\"/etc/ssl\";ENGINESDIR=\"/dev/null\";TERMIOS;")
+  set_target_properties(openssl PROPERTIES COMPILE_FLAGS "-m64 -Wa,--noexecstack -Wall -O3 -pthread -m64 -Wall -O3 -Wno-missing-field-initializers -Wno-old-style-declaration -O3 -Wno-unknown-warning-option -fPIC ")
 elseif(${CMAKE_BUILD_TYPE} MATCHES "Release")
-set_target_properties(openssl PROPERTIES COMPILE_DEFINITIONS "OPENSSL_NO_HW;NDEBUG;OPENSSL_USE_NODELETE;L_ENDIAN;OPENSSL_PIC;OPENSSL_CPUID_OBJ;OPENSSL_IA32_SSE2;OPENSSL_BN_ASM_MONT;OPENSSL_BN_ASM_MONT5;OPENSSL_BN_ASM_GF2m;SHA1_ASM;SHA256_ASM;SHA512_ASM;KECCAK1600_ASM;RC4_ASM;MD5_ASM;AESNI_ASM;VPAES_ASM;GHASH_ASM;ECP_NISTZ256_ASM;X25519_ASM;POLY1305_ASM;OPENSSLDIR=\"/etc/ssl\";ENGINESDIR=\"/dev/null\";TERMIOS;DEBUG;MS_LOG_TRACE;MS_LOG_FILE_LINE;")
-set_target_properties(openssl PROPERTIES COMPILE_FLAGS "-m64 -Wa,--noexecstack -Wall -O3 -pthread -m64 -Wall -O3 -Wno-missing-field-initializers -Wno-old-style-declaration -g -O0 -Wno-parentheses-equality -Wno-unknown-warning-option -fPIC ")
+  set_target_properties(openssl PROPERTIES COMPILE_DEFINITIONS "OPENSSL_NO_HW;NDEBUG;OPENSSL_USE_NODELETE;L_ENDIAN;OPENSSL_PIC;OPENSSL_CPUID_OBJ;OPENSSL_IA32_SSE2;OPENSSL_BN_ASM_MONT;OPENSSL_BN_ASM_MONT5;OPENSSL_BN_ASM_GF2m;SHA1_ASM;SHA256_ASM;SHA512_ASM;KECCAK1600_ASM;RC4_ASM;MD5_ASM;AESNI_ASM;VPAES_ASM;GHASH_ASM;ECP_NISTZ256_ASM;X25519_ASM;POLY1305_ASM;OPENSSLDIR=\"/etc/ssl\";ENGINESDIR=\"/dev/null\";TERMIOS;DEBUG;MS_LOG_TRACE;MS_LOG_FILE_LINE;")
+  set_target_properties(openssl PROPERTIES COMPILE_FLAGS "-m64 -Wa,--noexecstack -Wall -O3 -pthread -m64 -Wall -O3 -Wno-missing-field-initializers -Wno-old-style-declaration -g -O0 -Wno-parentheses-equality -Wno-unknown-warning-option -fPIC ")
 else()
-message(FATAL_ERROR "Build type must be either Debug or Release, \"${CMAKE_BUILD_TYPE}\" was specified")
+  message(FATAL_ERROR "Build type must be either Debug or Release, \"${CMAKE_BUILD_TYPE}\" was specified")
 endif()
 set_target_properties(openssl PROPERTIES LINK_FLAGS "-m64 ")
 set_target_properties(openssl PROPERTIES XCODE_ATTRIBUTE_GCC_VERSION "com.apple.compilers.llvm.clang.1_0")
 set_target_properties(openssl PROPERTIES XCODE_ATTRIBUTE_GCC_WARN_ABOUT_MISSING_NEWLINE "YES")
 set_target_properties(openssl PROPERTIES XCODE_ATTRIBUTE_OTHER_CFLAGS "-fstrict-aliasing -g -fPIC ")
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-set_target_properties(openssl PROPERTIES XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL "0")
+  set_target_properties(openssl PROPERTIES XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL "0")
 endif()
 set_target_properties(openssl PROPERTIES XCODE_ATTRIBUTE_PREBINDING "NO")
 set_target_properties(openssl PROPERTIES XCODE_ATTRIBUTE_WARNING_CFLAGS "-Wall -Wendif-labels -W -Wno-unused-parameter -Wundeclared-selector -Wno-parentheses-equality ")
 set_target_properties(openssl PROPERTIES XCODE_ATTRIBUTE_ARCHS "x86_64 ")
-unset(TOOLSET)
-unset(TARGET)
 
 # usrsctp
 set(sctp_werror OFF CACHE INTERNAL "")
@@ -1007,8 +1002,6 @@ unset(sctp_link_programs_static)
 include_directories(deps/json/single_include/nlohmann)
 
 #mediasoup/worker/deps/openssl/openssl.gyp:openssl-cli#target
-set(TARGET "openssl-cli")
-set(TOOLSET "target")
 list(APPEND openssl-cli__c_srcs
   "deps/openssl/openssl/apps/asn1pars.c"
   "deps/openssl/openssl/apps/ca.c"
@@ -1083,20 +1076,20 @@ list(APPEND openssl-cli__include_dirs
   "${CMAKE_CURRENT_LIST_DIR}/deps/openssl/openssl/include")
 set_property(TARGET openssl-cli APPEND PROPERTY INCLUDE_DIRECTORIES ${openssl-cli__include_dirs})
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-set_target_properties(openssl-cli PROPERTIES COMPILE_DEFINITIONS "NDEBUG;OPENSSL_USE_NODELETE;L_ENDIAN;OPENSSL_PIC;OPENSSL_CPUID_OBJ;OPENSSL_IA32_SSE2;OPENSSL_BN_ASM_MONT;OPENSSL_BN_ASM_MONT5;OPENSSL_BN_ASM_GF2m;SHA1_ASM;SHA256_ASM;SHA512_ASM;KECCAK1600_ASM;RC4_ASM;MD5_ASM;AESNI_ASM;VPAES_ASM;GHASH_ASM;ECP_NISTZ256_ASM;X25519_ASM;POLY1305_ASM;OPENSSLDIR=\"/etc/ssl\";ENGINESDIR=\"/dev/null\";TERMIOS;DEBUG;MS_LOG_TRACE;MS_LOG_FILE_LINE;")
-set_target_properties(openssl-cli PROPERTIES COMPILE_FLAGS "-m64 -Wa,--noexecstack -Wall -O3 -pthread -m64 -Wall -O3 -Wno-missing-field-initializers -Wno-old-style-declaration -g -O0 -Wno-parentheses-equality -Wno-unknown-warning-option -fPIC ")
+  set_target_properties(openssl-cli PROPERTIES COMPILE_DEFINITIONS "NDEBUG;OPENSSL_USE_NODELETE;L_ENDIAN;OPENSSL_PIC;OPENSSL_CPUID_OBJ;OPENSSL_IA32_SSE2;OPENSSL_BN_ASM_MONT;OPENSSL_BN_ASM_MONT5;OPENSSL_BN_ASM_GF2m;SHA1_ASM;SHA256_ASM;SHA512_ASM;KECCAK1600_ASM;RC4_ASM;MD5_ASM;AESNI_ASM;VPAES_ASM;GHASH_ASM;ECP_NISTZ256_ASM;X25519_ASM;POLY1305_ASM;OPENSSLDIR=\"/etc/ssl\";ENGINESDIR=\"/dev/null\";TERMIOS;DEBUG;MS_LOG_TRACE;MS_LOG_FILE_LINE;")
+  set_target_properties(openssl-cli PROPERTIES COMPILE_FLAGS "-m64 -Wa,--noexecstack -Wall -O3 -pthread -m64 -Wall -O3 -Wno-missing-field-initializers -Wno-old-style-declaration -g -O0 -Wno-parentheses-equality -Wno-unknown-warning-option -fPIC ")
 elseif(${CMAKE_BUILD_TYPE} MATCHES "Release")
-set_target_properties(openssl-cli PROPERTIES COMPILE_DEFINITIONS "NDEBUG;OPENSSL_USE_NODELETE;L_ENDIAN;OPENSSL_PIC;OPENSSL_CPUID_OBJ;OPENSSL_IA32_SSE2;OPENSSL_BN_ASM_MONT;OPENSSL_BN_ASM_MONT5;OPENSSL_BN_ASM_GF2m;SHA1_ASM;SHA256_ASM;SHA512_ASM;KECCAK1600_ASM;RC4_ASM;MD5_ASM;AESNI_ASM;VPAES_ASM;GHASH_ASM;ECP_NISTZ256_ASM;X25519_ASM;POLY1305_ASM;OPENSSLDIR=\"/etc/ssl\";ENGINESDIR=\"/dev/null\";TERMIOS;")
-set_target_properties(openssl-cli PROPERTIES COMPILE_FLAGS "-m64 -Wa,--noexecstack -Wall -O3 -pthread -m64 -Wall -O3 -Wno-missing-field-initializers -Wno-old-style-declaration -O3 -Wno-unknown-warning-option -fPIC ")
+  set_target_properties(openssl-cli PROPERTIES COMPILE_DEFINITIONS "NDEBUG;OPENSSL_USE_NODELETE;L_ENDIAN;OPENSSL_PIC;OPENSSL_CPUID_OBJ;OPENSSL_IA32_SSE2;OPENSSL_BN_ASM_MONT;OPENSSL_BN_ASM_MONT5;OPENSSL_BN_ASM_GF2m;SHA1_ASM;SHA256_ASM;SHA512_ASM;KECCAK1600_ASM;RC4_ASM;MD5_ASM;AESNI_ASM;VPAES_ASM;GHASH_ASM;ECP_NISTZ256_ASM;X25519_ASM;POLY1305_ASM;OPENSSLDIR=\"/etc/ssl\";ENGINESDIR=\"/dev/null\";TERMIOS;")
+  set_target_properties(openssl-cli PROPERTIES COMPILE_FLAGS "-m64 -Wa,--noexecstack -Wall -O3 -pthread -m64 -Wall -O3 -Wno-missing-field-initializers -Wno-old-style-declaration -O3 -Wno-unknown-warning-option -fPIC ")
 else()
-message(FATAL_ERROR "Build type must be either Debug or Release, \"${CMAKE_BUILD_TYPE}\" was specified")
+  message(FATAL_ERROR "Build type must be either Debug or Release, \"${CMAKE_BUILD_TYPE}\" was specified")
 endif()
 set_target_properties(openssl-cli PROPERTIES LINK_FLAGS "-m64 ")
 set_target_properties(openssl-cli PROPERTIES XCODE_ATTRIBUTE_GCC_VERSION "com.apple.compilers.llvm.clang.1_0")
 set_target_properties(openssl-cli PROPERTIES XCODE_ATTRIBUTE_GCC_WARN_ABOUT_MISSING_NEWLINE "YES")
 set_target_properties(openssl-cli PROPERTIES XCODE_ATTRIBUTE_OTHER_CFLAGS "-fstrict-aliasing -g -fPIC ")
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-set_target_properties(openssl-cli PROPERTIES XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL "0")
+  set_target_properties(openssl-cli PROPERTIES XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL "0")
 endif()
 set_target_properties(openssl-cli PROPERTIES XCODE_ATTRIBUTE_PREBINDING "NO")
 set_target_properties(openssl-cli PROPERTIES XCODE_ATTRIBUTE_WARNING_CFLAGS "-Wall -Wendif-labels -W -Wno-unused-parameter -Wundeclared-selector -Wno-parentheses-equality ")
@@ -1105,20 +1098,15 @@ target_link_libraries(openssl-cli
   openssl
   "-ldl -pthread"
 )
-unset(TOOLSET)
-unset(TARGET)
 
 # srtp2
 set(TEST_APPS OFF CACHE INTERNAL "")
 set(ENABLE_OPENSSL ON CACHE INTERNAL "")
 add_subdirectory(deps/libsrtp/srtp)
-include_directories(deps/libsrtp/srtp/include)
 unset(TEST_APPS)
 unset(ENABLE_OPENSSL)
 
 #mediasoup/worker/deps/netstring/netstring.gyp:netstring#target
-set(TARGET "netstring")
-set(TOOLSET "target")
 set(netstring__c_srcs "deps/netstring/netstring-c/netstring.c")
 set(netstring__other_srcs "deps/netstring/netstring-c/netstring.h")
 add_library(netstring STATIC ${netstring__c_srcs} ${netstring__other_srcs})
@@ -1130,29 +1118,25 @@ set_target_properties(netstring PROPERTIES ARCHIVE_OUTPUT_NAME "netstring")
 set_target_properties(netstring PROPERTIES SUFFIX ".a")
 set_source_files_properties(${builddir}/libnetstring.a PROPERTIES GENERATED "TRUE")
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-set_target_properties(netstring PROPERTIES COMPILE_DEFINITIONS "DEBUG;MS_LOG_TRACE;MS_LOG_FILE_LINE;")
-set_target_properties(netstring PROPERTIES COMPILE_FLAGS "-m64 -Wall -Wno-sign-compare -g -O0 -Wno-parentheses-equality -Wno-unknown-warning-option -fPIC ")
+  set_target_properties(netstring PROPERTIES COMPILE_DEFINITIONS "DEBUG;MS_LOG_TRACE;MS_LOG_FILE_LINE;")
+  set_target_properties(netstring PROPERTIES COMPILE_FLAGS "-m64 -Wall -Wno-sign-compare -g -O0 -Wno-parentheses-equality -Wno-unknown-warning-option -fPIC ")
 elseif(${CMAKE_BUILD_TYPE} MATCHES "Release")
-set_target_properties(netstring PROPERTIES COMPILE_FLAGS "-m64 -Wall -Wno-sign-compare -O3 -Wno-unknown-warning-option -fPIC ")
+  set_target_properties(netstring PROPERTIES COMPILE_FLAGS "-m64 -Wall -Wno-sign-compare -O3 -Wno-unknown-warning-option -fPIC ")
 else()
-message(FATAL_ERROR "Build type must be either Debug or Release, \"${CMAKE_BUILD_TYPE}\" was specified")
+  message(FATAL_ERROR "Build type must be either Debug or Release, \"${CMAKE_BUILD_TYPE}\" was specified")
 endif()
 set_target_properties(netstring PROPERTIES LINK_FLAGS "-m64 ")
 set_target_properties(netstring PROPERTIES XCODE_ATTRIBUTE_GCC_VERSION "com.apple.compilers.llvm.clang.1_0")
 set_target_properties(netstring PROPERTIES XCODE_ATTRIBUTE_GCC_WARN_ABOUT_MISSING_NEWLINE "YES")
 set_target_properties(netstring PROPERTIES XCODE_ATTRIBUTE_OTHER_CFLAGS "-fstrict-aliasing -g -fPIC ")
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-set_target_properties(netstring PROPERTIES XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL "0")
+  set_target_properties(netstring PROPERTIES XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL "0")
 endif()
 set_target_properties(netstring PROPERTIES XCODE_ATTRIBUTE_PREBINDING "NO")
 set_target_properties(netstring PROPERTIES XCODE_ATTRIBUTE_WARNING_CFLAGS "-Wall -Wendif-labels -W -Wno-unused-parameter -Wundeclared-selector -Wno-parentheses-equality ")
 set_target_properties(netstring PROPERTIES XCODE_ATTRIBUTE_ARCHS "x86_64 ")
-unset(TOOLSET)
-unset(TARGET)
 
 #mediasoup/worker/deps/libwebrtc/deps/abseil-cpp/abseil-cpp.gyp:abseil#target
-set(TARGET "abseil")
-set(TOOLSET "target")
 list(APPEND abseil__cxx_srcs
   "deps/libwebrtc/deps/abseil-cpp/abseil-cpp/absl/strings/match.cc"
   "deps/libwebrtc/deps/abseil-cpp/abseil-cpp/absl/strings/internal/charconv_bigint.cc"
@@ -1384,34 +1368,30 @@ set_source_files_properties(${builddir}/libabseil.a PROPERTIES GENERATED "TRUE")
 set(abseil__include_dirs "${CMAKE_CURRENT_LIST_DIR}/deps/libwebrtc/deps/abseil-cpp/abseil-cpp")
 set_property(TARGET abseil APPEND PROPERTY INCLUDE_DIRECTORIES ${abseil__include_dirs})
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-set_target_properties(abseil PROPERTIES COMPILE_DEFINITIONS "ABSL_ALLOCATOR_NOTHROW=1;DEBUG;MS_LOG_TRACE;MS_LOG_FILE_LINE;")
-set_target_properties(abseil PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -Wno-sign-compare -m64 -g -O0 -Wno-parentheses-equality -Wno-unknown-warning-option -fPIC ")
+  set_target_properties(abseil PROPERTIES COMPILE_DEFINITIONS "ABSL_ALLOCATOR_NOTHROW=1;DEBUG;MS_LOG_TRACE;MS_LOG_FILE_LINE;")
+  set_target_properties(abseil PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -Wno-sign-compare -m64 -g -O0 -Wno-parentheses-equality -Wno-unknown-warning-option -fPIC ")
 elseif(${CMAKE_BUILD_TYPE} MATCHES "Release")
-set_target_properties(abseil PROPERTIES COMPILE_DEFINITIONS "ABSL_ALLOCATOR_NOTHROW=1;")
-set_target_properties(abseil PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -Wno-sign-compare -m64 -O3 -Wno-unknown-warning-option -fPIC ")
+  set_target_properties(abseil PROPERTIES COMPILE_DEFINITIONS "ABSL_ALLOCATOR_NOTHROW=1;")
+  set_target_properties(abseil PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -Wno-sign-compare -m64 -O3 -Wno-unknown-warning-option -fPIC ")
 else()
-message(FATAL_ERROR "Build type must be either Debug or Release, \"${CMAKE_BUILD_TYPE}\" was specified")
+  message(FATAL_ERROR "Build type must be either Debug or Release, \"${CMAKE_BUILD_TYPE}\" was specified")
 endif()
 set_target_properties(abseil PROPERTIES LINK_FLAGS "-m64 ")
 set_target_properties(abseil PROPERTIES XCODE_ATTRIBUTE_GCC_VERSION "com.apple.compilers.llvm.clang.1_0")
 set_target_properties(abseil PROPERTIES XCODE_ATTRIBUTE_GCC_WARN_ABOUT_MISSING_NEWLINE "YES")
 set_target_properties(abseil PROPERTIES XCODE_ATTRIBUTE_OTHER_CFLAGS "-fstrict-aliasing -g -fPIC ")
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-set_target_properties(abseil PROPERTIES XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL "0")
+  set_target_properties(abseil PROPERTIES XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL "0")
 endif()
 set_target_properties(abseil PROPERTIES XCODE_ATTRIBUTE_PREBINDING "NO")
 set_target_properties(abseil PROPERTIES XCODE_ATTRIBUTE_WARNING_CFLAGS "-Wall -Wendif-labels -W -Wno-unused-parameter -Wundeclared-selector -Wno-parentheses-equality ")
 set_target_properties(abseil PROPERTIES XCODE_ATTRIBUTE_ARCHS "x86_64 ")
-unset(TOOLSET)
-unset(TARGET)
 
 # libuv
 add_subdirectory(deps/libuv/libuv)
 include_directories(deps/libuv/libuv/include)
 
 #mediasoup/worker/deps/libwebrtc/libwebrtc.gyp:libwebrtc#target
-set(TARGET "libwebrtc")
-set(TOOLSET "target")
 list(APPEND libwebrtc__cxx_srcs
   "deps/libwebrtc/libwebrtc/system_wrappers/source/field_trial.cc"
   "deps/libwebrtc/libwebrtc/rtc_base/rate_statistics.cc"
@@ -1535,30 +1515,26 @@ list(APPEND libwebrtc__include_dirs
   "${CMAKE_CURRENT_LIST_DIR}/deps/openssl/openssl/include")
 set_property(TARGET libwebrtc APPEND PROPERTY INCLUDE_DIRECTORIES ${libwebrtc__include_dirs})
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-set_target_properties(libwebrtc PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;_POSIX_C_SOURCE=200112;DEBUG;MS_LOG_TRACE;MS_LOG_FILE_LINE;")
-set_target_properties(libwebrtc PROPERTIES COMPILE_FLAGS "-std=c++11 -m64 -g -O0 -Wno-parentheses-equality -Wno-unknown-warning-option -fPIC ")
+  set_target_properties(libwebrtc PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;_POSIX_C_SOURCE=200112;DEBUG;MS_LOG_TRACE;MS_LOG_FILE_LINE;")
+  set_target_properties(libwebrtc PROPERTIES COMPILE_FLAGS "-std=c++11 -m64 -g -O0 -Wno-parentheses-equality -Wno-unknown-warning-option -fPIC ")
 elseif(${CMAKE_BUILD_TYPE} MATCHES "Release")
-set_target_properties(libwebrtc PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;_POSIX_C_SOURCE=200112;")
-set_target_properties(libwebrtc PROPERTIES COMPILE_FLAGS "-std=c++11 -m64 -O3 -Wno-unknown-warning-option -fPIC ")
+  set_target_properties(libwebrtc PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;_POSIX_C_SOURCE=200112;")
+  set_target_properties(libwebrtc PROPERTIES COMPILE_FLAGS "-std=c++11 -m64 -O3 -Wno-unknown-warning-option -fPIC ")
 else()
-message(FATAL_ERROR "Build type must be either Debug or Release, \"${CMAKE_BUILD_TYPE}\" was specified")
+  message(FATAL_ERROR "Build type must be either Debug or Release, \"${CMAKE_BUILD_TYPE}\" was specified")
 endif()
 set_target_properties(libwebrtc PROPERTIES LINK_FLAGS "-m64 ")
 set_target_properties(libwebrtc PROPERTIES XCODE_ATTRIBUTE_GCC_VERSION "com.apple.compilers.llvm.clang.1_0")
 set_target_properties(libwebrtc PROPERTIES XCODE_ATTRIBUTE_GCC_WARN_ABOUT_MISSING_NEWLINE "YES")
 set_target_properties(libwebrtc PROPERTIES XCODE_ATTRIBUTE_OTHER_CFLAGS "-fstrict-aliasing -g -fPIC ")
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-set_target_properties(libwebrtc PROPERTIES XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL "0")
+  set_target_properties(libwebrtc PROPERTIES XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL "0")
 endif()
 set_target_properties(libwebrtc PROPERTIES XCODE_ATTRIBUTE_PREBINDING "NO")
 set_target_properties(libwebrtc PROPERTIES XCODE_ATTRIBUTE_WARNING_CFLAGS "-Wall -Wendif-labels -W -Wno-unused-parameter -Wundeclared-selector -Wno-parentheses-equality ")
 set_target_properties(libwebrtc PROPERTIES XCODE_ATTRIBUTE_ARCHS "x86_64 ")
-unset(TOOLSET)
-unset(TARGET)
 
 #mediasoup/worker/mediasoup-worker.gyp:mediasoup-worker-test#target
-set(TARGET "mediasoup-worker-test")
-set(TOOLSET "target")
 set(mediasoup-worker-test_sources
   "test/src/tests.cpp"
   "test/src/RTC/TestKeyFrameRequestManager.cpp"
@@ -1608,13 +1584,6 @@ add_executable(
   ${libmediasoup-worker_headers}
   ${mediasoup-worker-test_headers}
 )
-set_target_properties(mediasoup-worker-test PROPERTIES EXCLUDE_FROM_ALL "FALSE")
-set_source_files_properties(${mediasoup-worker-test__other_srcs} PROPERTIES HEADER_FILE_ONLY "TRUE")
-set_target_properties(mediasoup-worker-test PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${builddir}")
-set_target_properties(mediasoup-worker-test PROPERTIES PREFIX "")
-set_target_properties(mediasoup-worker-test PROPERTIES RUNTIME_OUTPUT_NAME "mediasoup-worker-test")
-set_target_properties(mediasoup-worker-test PROPERTIES SUFFIX "")
-set_source_files_properties(${builddir}/mediasoup-worker-test PROPERTIES GENERATED "TRUE")
 list(APPEND mediasoup-worker-test__include_dirs
   "${CMAKE_CURRENT_LIST_DIR}/include"
   "${CMAKE_CURRENT_LIST_DIR}/test/include"
@@ -1626,20 +1595,19 @@ list(APPEND mediasoup-worker-test__include_dirs
   "${CMAKE_CURRENT_LIST_DIR}/deps/libwebrtc/deps/abseil-cpp/abseil-cpp")
 set_property(TARGET mediasoup-worker-test APPEND PROPERTY INCLUDE_DIRECTORIES ${mediasoup-worker-test__include_dirs})
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-set_target_properties(mediasoup-worker-test PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_POSIX_C_SOURCE=200112;_GNU_SOURCE;MS_LOG_STD;MS_TEST;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;DEBUG;MS_LOG_TRACE;MS_LOG_FILE_LINE;")
-set_target_properties(mediasoup-worker-test PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -m64 -g -O0 -Wno-parentheses-equality -Wno-unknown-warning-option -fPIC ")
+  set_target_properties(mediasoup-worker-test PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_POSIX_C_SOURCE=200112;_GNU_SOURCE;MS_LOG_STD;MS_TEST;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;DEBUG;MS_LOG_TRACE;MS_LOG_FILE_LINE;")
+  set_target_properties(mediasoup-worker-test PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -m64 -g -O0 -Wno-parentheses-equality -Wno-unknown-warning-option -fPIC ")
 elseif(${CMAKE_BUILD_TYPE} MATCHES "Release")
-set_target_properties(mediasoup-worker-test PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_POSIX_C_SOURCE=200112;_GNU_SOURCE;MS_LOG_STD;MS_TEST;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;")
-set_target_properties(mediasoup-worker-test PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -m64 -O3 -Wno-unknown-warning-option -fPIC ")
+  set_target_properties(mediasoup-worker-test PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_POSIX_C_SOURCE=200112;_GNU_SOURCE;MS_LOG_STD;MS_TEST;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;")
+  set_target_properties(mediasoup-worker-test PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -m64 -O3 -Wno-unknown-warning-option -fPIC ")
 else()
-message(FATAL_ERROR "Build type must be either Debug or Release, \"${CMAKE_BUILD_TYPE}\" was specified")
+  message(FATAL_ERROR "Build type must be either Debug or Release, \"${CMAKE_BUILD_TYPE}\" was specified")
 endif()
-set_target_properties(mediasoup-worker-test PROPERTIES LINK_FLAGS "-Wl,--whole-archive ${builddir}/libopenssl.a -Wl,--no-whole-archive -m64 -pthread ")
 set_target_properties(mediasoup-worker-test PROPERTIES XCODE_ATTRIBUTE_GCC_VERSION "com.apple.compilers.llvm.clang.1_0")
 set_target_properties(mediasoup-worker-test PROPERTIES XCODE_ATTRIBUTE_GCC_WARN_ABOUT_MISSING_NEWLINE "YES")
 set_target_properties(mediasoup-worker-test PROPERTIES XCODE_ATTRIBUTE_OTHER_CFLAGS "-fstrict-aliasing -g -fPIC ")
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-set_target_properties(mediasoup-worker-test PROPERTIES XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL "0")
+  set_target_properties(mediasoup-worker-test PROPERTIES XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL "0")
 endif()
 set_target_properties(mediasoup-worker-test PROPERTIES XCODE_ATTRIBUTE_OTHER_LDFLAGS "--coverage ")
 set_target_properties(mediasoup-worker-test PROPERTIES XCODE_ATTRIBUTE_PREBINDING "NO")
@@ -1647,27 +1615,18 @@ set_target_properties(mediasoup-worker-test PROPERTIES XCODE_ATTRIBUTE_OTHER_CPL
 set_target_properties(mediasoup-worker-test PROPERTIES XCODE_ATTRIBUTE_WARNING_CFLAGS "-Wall -Wendif-labels -W -Wno-unused-parameter -Wundeclared-selector -Wno-parentheses-equality ")
 set_target_properties(mediasoup-worker-test PROPERTIES XCODE_ATTRIBUTE_ARCHS "x86_64 ")
 target_link_libraries(mediasoup-worker-test
--Wl,--start-group
+  openssl
   netstring
   uv_a
-  openssl
   srtp2
   usrsctp
   libwebrtc
   abseil
--Wl,--end-group
-  "-lm"
-  "-ldl"
-  "-lrt"
 )
-unset(TOOLSET)
-unset(TARGET)
 unset(mediasoup-worker-test_sources)
 unset(mediasoup-worker-test_headers)
 
 #mediasoup/worker/mediasoup-worker.gyp:mediasoup-worker-fuzzer#target
-set(TARGET "mediasoup-worker-fuzzer")
-set(TOOLSET "target")
 set(mediasoup-worker-fuzzer_sources
   "fuzzer/src/fuzzer.cpp"
   "fuzzer/src/FuzzerUtils.cpp"
@@ -1733,13 +1692,6 @@ add_executable(mediasoup-worker-fuzzer
   ${libmediasoup-worker_headers}
   ${mediasoup-worker-fuzzer_headers}
 )
-set_target_properties(mediasoup-worker-fuzzer PROPERTIES EXCLUDE_FROM_ALL "FALSE")
-set_source_files_properties(${mediasoup-worker-fuzzer__other_srcs} PROPERTIES HEADER_FILE_ONLY "TRUE")
-set_target_properties(mediasoup-worker-fuzzer PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${builddir}")
-set_target_properties(mediasoup-worker-fuzzer PROPERTIES PREFIX "")
-set_target_properties(mediasoup-worker-fuzzer PROPERTIES RUNTIME_OUTPUT_NAME "mediasoup-worker-fuzzer")
-set_target_properties(mediasoup-worker-fuzzer PROPERTIES SUFFIX "")
-set_source_files_properties(${builddir}/mediasoup-worker-fuzzer PROPERTIES GENERATED "TRUE")
 list(APPEND mediasoup-worker-fuzzer__include_dirs
   "${CMAKE_CURRENT_LIST_DIR}/include"
   "${CMAKE_CURRENT_LIST_DIR}/fuzzer/include"
@@ -1751,57 +1703,41 @@ list(APPEND mediasoup-worker-fuzzer__include_dirs
 set_property(TARGET mediasoup-worker-fuzzer APPEND PROPERTY INCLUDE_DIRECTORIES ${mediasoup-worker-fuzzer__include_dirs})
 # TODO: -fsanitize is missing here and below
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-set_target_properties(mediasoup-worker-fuzzer PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_POSIX_C_SOURCE=200112;_GNU_SOURCE;DEBUG;MS_LOG_STD;MS_TEST;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;MS_LOG_TRACE;MS_LOG_FILE_LINE;")
-set_target_properties(mediasoup-worker-fuzzer PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -m64 -g -O0 -g -O0 -Wno-parentheses-equality -Wno-unknown-warning-option -fPIC ")
+  set_target_properties(mediasoup-worker-fuzzer PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_POSIX_C_SOURCE=200112;_GNU_SOURCE;DEBUG;MS_LOG_STD;MS_TEST;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;MS_LOG_TRACE;MS_LOG_FILE_LINE;")
+  set_target_properties(mediasoup-worker-fuzzer PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -m64 -g -O0 -g -O0 -Wno-parentheses-equality -Wno-unknown-warning-option -fPIC ")
 elseif(${CMAKE_BUILD_TYPE} MATCHES "Release")
-set_target_properties(mediasoup-worker-fuzzer PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_POSIX_C_SOURCE=200112;_GNU_SOURCE;DEBUG;MS_LOG_STD;MS_TEST;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;")
-set_target_properties(mediasoup-worker-fuzzer PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -m64 -g -O0 -O3 -Wno-unknown-warning-option -fPIC ")
+  set_target_properties(mediasoup-worker-fuzzer PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_POSIX_C_SOURCE=200112;_GNU_SOURCE;DEBUG;MS_LOG_STD;MS_TEST;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;")
+  set_target_properties(mediasoup-worker-fuzzer PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -m64 -g -O0 -O3 -Wno-unknown-warning-option -fPIC ")
 else()
-message(FATAL_ERROR "Build type must be either Debug or Release, \"${CMAKE_BUILD_TYPE}\" was specified")
+  message(FATAL_ERROR "Build type must be either Debug or Release, \"${CMAKE_BUILD_TYPE}\" was specified")
 endif()
-set_target_properties(mediasoup-worker-fuzzer PROPERTIES LINK_FLAGS "-Wl,--whole-archive ${builddir}/libopenssl.a -Wl,--no-whole-archive -m64 -pthread ")
 set_target_properties(mediasoup-worker-fuzzer PROPERTIES XCODE_ATTRIBUTE_GCC_VERSION "com.apple.compilers.llvm.clang.1_0")
 set_target_properties(mediasoup-worker-fuzzer PROPERTIES XCODE_ATTRIBUTE_GCC_WARN_ABOUT_MISSING_NEWLINE "YES")
 set_target_properties(mediasoup-worker-fuzzer PROPERTIES XCODE_ATTRIBUTE_OTHER_CFLAGS "-fstrict-aliasing -g -fPIC ")
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-set_target_properties(mediasoup-worker-fuzzer PROPERTIES XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL "0")
+  set_target_properties(mediasoup-worker-fuzzer PROPERTIES XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL "0")
 endif()
 set_target_properties(mediasoup-worker-fuzzer PROPERTIES XCODE_ATTRIBUTE_PREBINDING "NO")
 set_target_properties(mediasoup-worker-fuzzer PROPERTIES XCODE_ATTRIBUTE_WARNING_CFLAGS "-Wall -Wendif-labels -W -Wno-unused-parameter -Wundeclared-selector -Wno-parentheses-equality ")
 set_target_properties(mediasoup-worker-fuzzer PROPERTIES XCODE_ATTRIBUTE_ARCHS "x86_64 ")
 target_link_libraries(mediasoup-worker-fuzzer
--Wl,--start-group
+  openssl
   netstring
   uv_a
-  openssl
   srtp2
   usrsctp
   libwebrtc
   abseil
--Wl,--end-group
-  "-lm"
-  "-ldl"
-  "-lrt"
 )
-unset(TOOLSET)
-unset(TARGET)
 unset(mediasoup-worker-fuzzer_sources)
 unset(mediasoup-worker-fuzzer_headers)
 
 #mediasoup/worker/mediasoup-worker.gyp:mediasoup-worker#target
-set(TARGET "mediasoup-worker")
-set(TOOLSET "target")
 add_executable(mediasoup-worker
   "src/main.cpp"
   ${libmediasoup-worker_sources}
   ${libmediasoup-worker_headers}
 )
-set_target_properties(mediasoup-worker PROPERTIES EXCLUDE_FROM_ALL "FALSE")
-set_target_properties(mediasoup-worker PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${builddir}")
-set_target_properties(mediasoup-worker PROPERTIES PREFIX "")
-set_target_properties(mediasoup-worker PROPERTIES RUNTIME_OUTPUT_NAME "mediasoup-worker")
-set_target_properties(mediasoup-worker PROPERTIES SUFFIX "")
-set_source_files_properties(${builddir}/mediasoup-worker PROPERTIES GENERATED "TRUE")
 list(APPEND mediasoup-worker__include_dirs
   "${CMAKE_CURRENT_LIST_DIR}/include"
   "${CMAKE_CURRENT_LIST_DIR}/deps/netstring/netstring-c"
@@ -1811,52 +1747,37 @@ list(APPEND mediasoup-worker__include_dirs
   "${CMAKE_CURRENT_LIST_DIR}/deps/libwebrtc/deps/abseil-cpp/abseil-cpp")
 set_property(TARGET mediasoup-worker APPEND PROPERTY INCLUDE_DIRECTORIES ${mediasoup-worker__include_dirs})
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-set_target_properties(mediasoup-worker PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_POSIX_C_SOURCE=200112;_GNU_SOURCE;MS_EXECUTABLE;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;DEBUG;MS_LOG_TRACE;MS_LOG_FILE_LINE;")
-set_target_properties(mediasoup-worker PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -m64 -g -O0 -Wno-parentheses-equality -Wno-unknown-warning-option -fPIC ")
+  set_target_properties(mediasoup-worker PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_POSIX_C_SOURCE=200112;_GNU_SOURCE;MS_EXECUTABLE;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;DEBUG;MS_LOG_TRACE;MS_LOG_FILE_LINE;")
+  set_target_properties(mediasoup-worker PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -m64 -g -O0 -Wno-parentheses-equality -Wno-unknown-warning-option -fPIC ")
 elseif(${CMAKE_BUILD_TYPE} MATCHES "Release")
-set_target_properties(mediasoup-worker PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_POSIX_C_SOURCE=200112;_GNU_SOURCE;MS_EXECUTABLE;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;")
-set_target_properties(mediasoup-worker PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -m64 -O3 -Wno-unknown-warning-option -fPIC ")
+  set_target_properties(mediasoup-worker PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_POSIX_C_SOURCE=200112;_GNU_SOURCE;MS_EXECUTABLE;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;")
+  set_target_properties(mediasoup-worker PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -m64 -O3 -Wno-unknown-warning-option -fPIC ")
 else()
-message(FATAL_ERROR "Build type must be either Debug or Release, \"${CMAKE_BUILD_TYPE}\" was specified")
+  message(FATAL_ERROR "Build type must be either Debug or Release, \"${CMAKE_BUILD_TYPE}\" was specified")
 endif()
-set_target_properties(mediasoup-worker PROPERTIES LINK_FLAGS "-Wl,--whole-archive ${builddir}/libopenssl.a -Wl,--no-whole-archive -m64 -pthread ")
 set_target_properties(mediasoup-worker PROPERTIES XCODE_ATTRIBUTE_GCC_VERSION "com.apple.compilers.llvm.clang.1_0")
 set_target_properties(mediasoup-worker PROPERTIES XCODE_ATTRIBUTE_GCC_WARN_ABOUT_MISSING_NEWLINE "YES")
 set_target_properties(mediasoup-worker PROPERTIES XCODE_ATTRIBUTE_OTHER_CFLAGS "-fstrict-aliasing -g -fPIC ")
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-set_target_properties(mediasoup-worker PROPERTIES XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL "0")
+  set_target_properties(mediasoup-worker PROPERTIES XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL "0")
 endif()
 set_target_properties(mediasoup-worker PROPERTIES XCODE_ATTRIBUTE_PREBINDING "NO")
 set_target_properties(mediasoup-worker PROPERTIES XCODE_ATTRIBUTE_WARNING_CFLAGS "-Wall -Wendif-labels -W -Wno-unused-parameter -Wundeclared-selector -Wno-parentheses-equality ")
 set_target_properties(mediasoup-worker PROPERTIES XCODE_ATTRIBUTE_ARCHS "x86_64 ")
 target_link_libraries(mediasoup-worker
--Wl,--start-group
+  openssl
   netstring
   uv_a
-  openssl
   srtp2
   usrsctp
   libwebrtc
   abseil
--Wl,--end-group
-  "-lm"
-  "-ldl"
-  "-lrt"
 )
-unset(TOOLSET)
-unset(TARGET)
 
 #mediasoup/worker/mediasoup-worker.gyp:libmediasoup-worker#target
-set(TARGET "libmediasoup-worker")
-set(TOOLSET "target")
 add_library(libmediasoup-worker STATIC ${libmediasoup-worker_sources} ${libmediasoup-worker_haaders})
 set_target_properties(libmediasoup-worker PROPERTIES EXCLUDE_FROM_ALL "FALSE")
-set_source_files_properties(${libmediasoup-worker__other_srcs} PROPERTIES HEADER_FILE_ONLY "TRUE")
-set_target_properties(libmediasoup-worker PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${builddir}")
 set_target_properties(libmediasoup-worker PROPERTIES PREFIX "lib")
-set_target_properties(libmediasoup-worker PROPERTIES ARCHIVE_OUTPUT_NAME "mediasoup-worker")
-set_target_properties(libmediasoup-worker PROPERTIES SUFFIX ".a")
-set_source_files_properties(${builddir}/libmediasoup-worker.a PROPERTIES GENERATED "TRUE")
 list(APPEND libmediasoup-worker__include_dirs
   "${CMAKE_CURRENT_LIST_DIR}/include"
   "${CMAKE_CURRENT_LIST_DIR}/deps/netstring/netstring-c"
@@ -1866,23 +1787,29 @@ list(APPEND libmediasoup-worker__include_dirs
   "${CMAKE_CURRENT_LIST_DIR}/deps/libwebrtc/deps/abseil-cpp/abseil-cpp")
 set_property(TARGET libmediasoup-worker APPEND PROPERTY INCLUDE_DIRECTORIES ${libmediasoup-worker__include_dirs})
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-set_target_properties(libmediasoup-worker PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_POSIX_C_SOURCE=200112;_GNU_SOURCE;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;DEBUG;MS_LOG_TRACE;MS_LOG_FILE_LINE;")
-set_target_properties(libmediasoup-worker PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -m64 -g -O0 -Wno-parentheses-equality -Wno-unknown-warning-option -fPIC ")
+  set_target_properties(libmediasoup-worker PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_POSIX_C_SOURCE=200112;_GNU_SOURCE;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;DEBUG;MS_LOG_TRACE;MS_LOG_FILE_LINE;")
+  set_target_properties(libmediasoup-worker PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -m64 -g -O0 -Wno-parentheses-equality -Wno-unknown-warning-option -fPIC ")
 elseif(${CMAKE_BUILD_TYPE} MATCHES "Release")
-set_target_properties(libmediasoup-worker PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_POSIX_C_SOURCE=200112;_GNU_SOURCE;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;")
-set_target_properties(libmediasoup-worker PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -m64 -O3 -Wno-unknown-warning-option -fPIC ")
+  set_target_properties(libmediasoup-worker PROPERTIES COMPILE_DEFINITIONS "MS_LITTLE_ENDIAN;_POSIX_C_SOURCE=200112;_GNU_SOURCE;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;")
+  set_target_properties(libmediasoup-worker PROPERTIES COMPILE_FLAGS "-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-implicit-fallthrough -m64 -O3 -Wno-unknown-warning-option -fPIC ")
 else()
-message(FATAL_ERROR "Build type must be either Debug or Release, \"${CMAKE_BUILD_TYPE}\" was specified")
+  message(FATAL_ERROR "Build type must be either Debug or Release, \"${CMAKE_BUILD_TYPE}\" was specified")
 endif()
-set_target_properties(libmediasoup-worker PROPERTIES LINK_FLAGS "-Wl,--whole-archive ${builddir}/libopenssl.a -Wl,--no-whole-archive -m64 ")
 set_target_properties(libmediasoup-worker PROPERTIES XCODE_ATTRIBUTE_GCC_VERSION "com.apple.compilers.llvm.clang.1_0")
 set_target_properties(libmediasoup-worker PROPERTIES XCODE_ATTRIBUTE_GCC_WARN_ABOUT_MISSING_NEWLINE "YES")
 set_target_properties(libmediasoup-worker PROPERTIES XCODE_ATTRIBUTE_OTHER_CFLAGS "-fstrict-aliasing -g -fPIC ")
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-set_target_properties(libmediasoup-worker PROPERTIES XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL "0")
+  set_target_properties(libmediasoup-worker PROPERTIES XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL "0")
 endif()
 set_target_properties(libmediasoup-worker PROPERTIES XCODE_ATTRIBUTE_PREBINDING "NO")
 set_target_properties(libmediasoup-worker PROPERTIES XCODE_ATTRIBUTE_WARNING_CFLAGS "-Wall -Wendif-labels -W -Wno-unused-parameter -Wundeclared-selector -Wno-parentheses-equality ")
 set_target_properties(libmediasoup-worker PROPERTIES XCODE_ATTRIBUTE_ARCHS "x86_64 ")
-unset(TOOLSET)
-unset(TARGET)
+target_link_libraries(libmediasoup-worker
+  openssl
+  netstring
+  uv_a
+  srtp2
+  usrsctp
+  libwebrtc
+  abseil
+)
