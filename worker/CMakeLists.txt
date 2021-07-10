@@ -1,15 +1,17 @@
-cmake_minimum_required(VERSION 2.8.8 FATAL_ERROR)
-cmake_policy(VERSION 2.8.8)
+cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
+cmake_policy(VERSION 3.0)
 project(mediasoup-worker)
 enable_language(ASM)
+
+include(TestBigEndian)
+test_big_endian(is_big_endian)
+
+include(ExternalProject)
 
 set(CMAKE_C_OUTPUT_EXTENSION_REPLACE 1)
 set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
 
 set(CMAKE_NINJA_FORCE_RESPONSE_FILE 1)
-
-include(TestBigEndian)
-test_big_endian(is_big_endian)
 
 set(libmediasoup-worker_sources
   "src/lib.cpp"
@@ -1388,8 +1390,18 @@ set_target_properties(abseil PROPERTIES XCODE_ATTRIBUTE_WARNING_CFLAGS "-Wall -W
 set_target_properties(abseil PROPERTIES XCODE_ATTRIBUTE_ARCHS "x86_64 ")
 
 # libuv
-add_subdirectory(deps/libuv/libuv)
-include_directories(deps/libuv/libuv/include)
+ExternalProject_Add(libuv
+  URL https://dist.libuv.org/dist/v1.41.1/libuv-v1.41.1.tar.gz
+  PREFIX libuv
+  INSTALL_COMMAND ""
+  CMAKE_ARGS -DLIBUV_BUILD_TESTS=OFF
+)
+ExternalProject_Get_Property (libuv BINARY_DIR)
+link_directories(${BINARY_DIR})
+unset(BINARY_DIR)
+ExternalProject_Get_Property (libuv SOURCE_DIR)
+include_directories(${SOURCE_DIR}/include)
+unset(SOURCE_DIR)
 
 #mediasoup/worker/deps/libwebrtc/libwebrtc.gyp:libwebrtc#target
 list(APPEND libwebrtc__cxx_srcs
@@ -1584,6 +1596,7 @@ add_executable(
   ${libmediasoup-worker_headers}
   ${mediasoup-worker-test_headers}
 )
+add_dependencies(mediasoup-worker-test libuv)
 list(APPEND mediasoup-worker-test__include_dirs
   "${CMAKE_CURRENT_LIST_DIR}/include"
   "${CMAKE_CURRENT_LIST_DIR}/test/include"
@@ -1692,6 +1705,7 @@ add_executable(mediasoup-worker-fuzzer
   ${libmediasoup-worker_headers}
   ${mediasoup-worker-fuzzer_headers}
 )
+add_dependencies(mediasoup-worker-fuzzer libuv)
 list(APPEND mediasoup-worker-fuzzer__include_dirs
   "${CMAKE_CURRENT_LIST_DIR}/include"
   "${CMAKE_CURRENT_LIST_DIR}/fuzzer/include"
@@ -1738,6 +1752,7 @@ add_executable(mediasoup-worker
   ${libmediasoup-worker_sources}
   ${libmediasoup-worker_headers}
 )
+add_dependencies(mediasoup-worker libuv)
 list(APPEND mediasoup-worker__include_dirs
   "${CMAKE_CURRENT_LIST_DIR}/include"
   "${CMAKE_CURRENT_LIST_DIR}/deps/netstring/netstring-c"
@@ -1775,7 +1790,10 @@ target_link_libraries(mediasoup-worker
 )
 
 #mediasoup/worker/mediasoup-worker.gyp:libmediasoup-worker#target
-add_library(libmediasoup-worker STATIC ${libmediasoup-worker_sources} ${libmediasoup-worker_haaders})
+add_library(libmediasoup-worker
+  STATIC ${libmediasoup-worker_sources} ${libmediasoup-worker_haaders}
+)
+add_dependencies(libmediasoup-worker libuv)
 set_target_properties(libmediasoup-worker PROPERTIES EXCLUDE_FROM_ALL "FALSE")
 set_target_properties(libmediasoup-worker PROPERTIES PREFIX "lib")
 list(APPEND libmediasoup-worker__include_dirs
