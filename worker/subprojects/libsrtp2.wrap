@@ -1,0 +1,8 @@
+[wrap-file]
+directory = libsrtp-8168ab17f4cc7cacb2db1e6f3ec0b505d6f24693
+source_url = https://github.com/cisco/libsrtp/archive/8168ab17f4cc7cacb2db1e6f3ec0b505d6f24693.zip
+source_filename = 8168ab17f4cc7cacb2db1e6f3ec0b505d6f24693.zip
+source_hash = c6bb1932aba8b2fb571626102f97f8be85196ffd6f5c0c345ef21f1c024514bd
+
+[provide]
+libsrtp2 = libsrtp2_dep
