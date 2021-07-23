@@ -71,8 +71,8 @@ Here is a list of supported architectures for use of ASM in OpenSSL.
 (*1: This needs to be configured with the variable of node_byteorder:
 little)
 
-These are listed in [config/Makefile](config/Makefile).
-Please refer [config/opensslconf_asm.h](config/opensslconf_asm.h) for details.
+These are listed in [config/Makefile](worker/subprojects/openssl/config/Makefile).
+Please refer [config/opensslconf_asm.h](worker/subprojects/openssl/config/opensslconf_asm.h) for details.
 
 ### Upgrading OpenSSL
 

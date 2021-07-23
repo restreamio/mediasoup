@@ -86,12 +86,6 @@ function get_libuv()
 	get_dep "${GIT_REPO}" "${GIT_TAG}" "${DEST}"
 }
 
-function get_openssl()
-{
-	echo ">>> [WARN] openssl dep must be entirely copied from Node project as it is" >&2
-	exit 1
-}
-
 function get_libsrtp()
 {
 	GIT_REPO="https://github.com/cisco/libsrtp.git"
@@ -183,7 +177,7 @@ function get_win_getopt()
 case "${DEP}" in
 	'-h')
 		echo "Usage:"
-		echo "  ./scripts/$(basename $0) [gyp|json|netstring|libuv|openssl|libsrtp|usrsctp|abseil-cpp|catch|lcov|clang-fuzzer|fuzzer-corpora|win-getopt]"
+		echo "  ./scripts/$(basename $0) [gyp|json|netstring|libuv|libsrtp|usrsctp|abseil-cpp|catch|lcov|clang-fuzzer|fuzzer-corpora|win-getopt]"
 		echo
 		;;
 	gyp)
@@ -197,9 +191,6 @@ case "${DEP}" in
 		;;
 	libuv)
 		get_libuv
-		;;
-	openssl)
-		get_openssl
 		;;
 	libsrtp)
 		get_libsrtp
