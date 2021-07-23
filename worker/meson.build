@@ -145,10 +145,11 @@ common_sources = [
 
 cpp = meson.get_compiler('cpp')
 
-openssl_dep = dependency(
+openssl_proj = subproject(
   'openssl',
-  static: get_option('default_library') == 'static',
-  version: '>= 1.1.1'
+  default_options: [
+    'warning_level=0',
+  ],
 )
 nlohmann_json_proj = subproject(
   'nlohmann_json',
@@ -196,7 +197,7 @@ libwebrtc_include_directories = include_directories('include')
 subdir('deps/libwebrtc')
 
 dependencies = [
-  openssl_dep,
+  openssl_proj.get_variable('openssl_dep'),
   nlohmann_json_proj.get_variable('nlohmann_json_dep'),
   libuv_proj.get_variable('libuv_dep'),
   libsrtp2_proj.get_variable('libsrtp2_dep'),
@@ -221,6 +222,7 @@ libmediasoup_worker = library(
   include_directories: include_directories('include'),
   cpp_args: cpp_args,
   link_whole: [
+    openssl_proj.get_variable('openssl_lib'),
     libuv_proj.get_variable('libuv'),
     libsrtp2_proj.get_variable('libsrtp2'),
     usrsctp_proj.get_variable('usrsctp'),
