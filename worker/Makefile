@@ -35,11 +35,8 @@ default: mediasoup-worker
 
 meson-ninja:
 ifeq ($(wildcard $(PIP_DIR)),)
-	# Updated pip and setuptools are needed for meson
-	# `--system` is not present everywhere and is only needed as workaround for Debian-specific issue (copied from
-	# https://github.com/gluster/gstatus/pull/33), fallback to command without `--system` if the first one fails.
-	$(PYTHON) -m pip install --system --target=$(PIP_DIR) pip setuptools || \
-		$(PYTHON) -m pip install --target=$(PIP_DIR) pip setuptools
+	# Install pip so we do not depend on it being installed system-wide.
+	$(PYTHON) deps/get-pip.py install --target=$(PIP_DIR) pip setuptools wheel
 	# Install `meson` and `ninja` using `pip` into custom location, so we don't depend on system-wide installation.
 	$(PYTHON) -m pip install --upgrade --target=$(PIP_DIR) meson ninja
 endif

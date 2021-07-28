@@ -174,10 +174,15 @@ function get_win_getopt()
 	get_dep "${GIT_REPO}" "${GIT_TAG}" "${DEST}"
 }
 
+function get_get_pip()
+{
+	curl -sSL https://bootstrap.pypa.io/get-pip.py -o deps/get-pip.py
+}
+
 case "${DEP}" in
 	'-h')
 		echo "Usage:"
-		echo "  ./scripts/$(basename $0) [gyp|json|netstring|libuv|libsrtp|usrsctp|abseil-cpp|catch|lcov|clang-fuzzer|fuzzer-corpora|win-getopt]"
+		echo "  ./scripts/$(basename $0) [gyp|json|netstring|libuv|libsrtp|usrsctp|abseil-cpp|catch|lcov|clang-fuzzer|fuzzer-corpora|win-getopt|get-pip]"
 		echo
 		;;
 	gyp)
@@ -215,6 +220,9 @@ case "${DEP}" in
 		;;
 	win-getopt)
 		get_win_getopt
+		;;
+	get-pip)
+		get_get_pip
 		;;
 	*)
 		echo ">>> [ERROR] unknown dep '${DEP}'" >&2
