@@ -41,30 +41,29 @@ if host_machine.system() == 'windows'
       compiler.find_library('crypt32'),
       compiler.find_library('user32'),
     ]
-  else
-    dependencies += [
-      compiler.find_library(
-        'ws2_32',
-        static: get_option('default_library') == 'static',
-      ),
-      compiler.find_library(
-        'gdi32',
-        static: get_option('default_library') == 'static',
-      ),
-      compiler.find_library(
-        'advapi32',
-        static: get_option('default_library') == 'static',
-      ),
-      compiler.find_library(
-        'crypt32',
-        static: get_option('default_library') == 'static',
-      ),
-      compiler.find_library(
-        'user32',
-        static: get_option('default_library') == 'static',
-      ),
-    ]
   endif
+  dependencies += [
+    compiler.find_library(
+      'ws2_32',
+      static: get_option('default_library') == 'static',
+    ),
+    compiler.find_library(
+      'gdi32',
+      static: get_option('default_library') == 'static',
+    ),
+    compiler.find_library(
+      'advapi32',
+      static: get_option('default_library') == 'static',
+    ),
+    compiler.find_library(
+      'crypt32',
+      static: get_option('default_library') == 'static',
+    ),
+    compiler.find_library(
+      'user32',
+      static: get_option('default_library') == 'static',
+    ),
+  ]
 elif host_machine.system() == 'darwin'
   defines += [
     'OPENSSLDIR="/System/Library/OpenSSL/"',
