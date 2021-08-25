@@ -9,7 +9,7 @@ use crate::data_structures::{
     TransportListenIp, TransportTuple,
 };
 use crate::messages::{
-    TransportCloseRequest, TransportConnectRequestWebRtc, TransportConnectRequestWebRtcData,
+    TransportCloseRequest, TransportConnectRequestWebRtcData, TransportConnectWebRtcRequest,
     TransportInternal, TransportRestartIceRequest, WebRtcTransportData,
 };
 use crate::producer::{Producer, ProducerId, ProducerOptions};
@@ -702,7 +702,7 @@ impl WebRtcTransport {
         let response = self
             .inner
             .channel
-            .request(TransportConnectRequestWebRtc {
+            .request(TransportConnectWebRtcRequest {
                 internal: self.get_internal(),
                 data: TransportConnectRequestWebRtcData {
                     dtls_parameters: remote_parameters.dtls_parameters,
